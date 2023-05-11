@@ -27,27 +27,27 @@
  *      used in a specific program 
  * 
 */
-#define DEBUG4
+// #define DEBUG4
 /*********************************
  * DEBUG5 -- debugging used for fifth sub function used for main function 
  *      used in a specific program 
  * 
 */
-#define DEBUG5
+// #define DEBUG5
 /**********************************
  * DEBUG9 -- debugging used for most mini function used generally 
  * 
  * example:   
  *      9  <-- last_digit(1239)
 */
-#define DEBUG9
+// #define DEBUG9
 /************************************
  * DEBUG8 -- debugging used for second most mini function used generally
  *  
 */
-#define DEBUG8
+// #define DEBUG8
 /***********************************
  * DEBUG7 -- debugging used for third most mini function used generally 
  * 
 */
-#define DEBUG7
+// #define DEBUG7

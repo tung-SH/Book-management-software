@@ -9,18 +9,18 @@
  *      2. tạo giá trị sách và 2 hàm cơ bản của giá trị 
  *          sách 
  * 
- * STATUS: code chưa hoàn thành 
- *      1. hàm minh họa giá trị bằng xâu đang dang dở 
+ * STATUS: code hoàn thành
  * 
  * SOURCE: PBL lập trình 
  * 
 */
 
 #include "setting.h"
+#include "int_to_string.c"
 #include <stdlib.h>
 #include <string.h>
 
-const int MAX_LENGTH = 200; /* MAX LENGTH OF STRING */
+const long long MAX_LENGTH = 1000000; /* MAX LENGTH OF STRING */
 
 struct book {
     char* isbn; /* book id */
@@ -53,6 +53,10 @@ book book_template(const char* isbnV, const char* nameV, const char* authorV, co
     strcpy(result.name, nameV); 
     strcpy(result.author, authorV); 
     strcpy(result.publisher, publisherV); 
+    // result.isbn = isbnV; 
+    // result.name = nameV; 
+    // result.author = authorV;
+    // result.publisher = publisherV; 
     result.publish_year = publish_yearV ;
     result.reprint = reprintV; 
     result.num_pages = num_pagesV; 
@@ -60,7 +64,7 @@ book book_template(const char* isbnV, const char* nameV, const char* authorV, co
     result.quantity = quantityV; 
 
     #ifdef DEBUG5 
-        printf("Book:\nIsbn: %s\nName: %s\nAuthor: %s\nPublisher: %s\nPublish year: %d\nReprint: %d times\nPages: %d\nCost: %d$\nQuantity: %d",
+        printf("Book:\nIsbn: %s\nName: %s\nAuthor: %s\nPublisher: %s\nPublish year: %d\nReprint: %d times\nPages: %d\nCost: %d$\nQuantity: %d.\n",
         result.isbn, result.name, result.author, result.publisher, result.publish_year, result.reprint, result.num_pages, result.cost, result.quantity); 
     #endif
 
@@ -76,17 +80,43 @@ char* book_to_string(book bookV) {
     char* result; 
     result = (char*)malloc(MAX_LENGTH); 
 
-    strcpy(result, "--------BOOK-------:\nISBN: "); 
+    strcpy(result, "---------BOOK--------\nISBN: "); 
     strcat(result, bookV.isbn); 
     strcat(result, "\nName: "); 
     strcat(result, bookV.name); 
     strcat(result, "\nAuthor: "); 
+    strcat(result, bookV.author);
+    strcat(result, "\nPublisher: "); 
+    strcat(result, bookV.publisher); 
+    strcat(result, "\nPublish year: "); 
+    strcat(result, itos(bookV.publish_year)); 
+    strcat(result, "\nReprint: "); 
+    strcat(result, itos(bookV.reprint)); 
+    strcat(result, " times\nPages: "); 
+    strcat(result, itos(bookV.num_pages)); 
+    strcat(result, "\nCost: "); 
+    strcat(result, itos(bookV.cost)); 
+    strcat(result, "$\nQuantity: "); 
+    strcat(result, itos(bookV.quantity)); 
+    strcat(result, "\n---------------------\n"); 
+
+    #ifdef DEBUG5
+    {
+        printf("%s", result); 
+    }
+    #endif
 
     return result; 
 }
 
+#ifdef DEBUG5
+
 int main(void) {
     book Sherlock_Holmes_p1; 
     Sherlock_Holmes_p1 = book_template("a", "Sherlock Holmes pt.1", "Conan Doyle", "b", 1991, 109, 304, 20, 10); 
+
+    book_to_string(Sherlock_Holmes_p1); 
 }
+
+#endif
 
