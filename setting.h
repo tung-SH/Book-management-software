@@ -21,7 +21,7 @@
  *      used in a specific program 
  * 
 */
-#define DEBUG3
+// #define DEBUG3
 /*********************************
  * DEBUG4 -- debugging used for fourth sub function used for main function 
  *      used in a specific program 
@@ -51,3 +51,9 @@
  * 
 */
 // #define DEBUG7
+
+FILE* debug_file; /* use when can't use stdout */
+
+void setup_debug_file(void) {
+    debug_file = fopen("debug.txt", "w");
+}

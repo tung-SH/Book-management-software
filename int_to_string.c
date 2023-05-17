@@ -1,3 +1,8 @@
+/*******************************
+ * int_to_string -- cung cấp hàm chuyển đổi 
+ *      từ số nguyên sang xâu 
+*/
+
 
 
 // #include <stdio.h>

@@ -13,9 +13,11 @@
 */
 
 // #include "setting.h"
+#include <stdio.h>
 #include "book.c"
 
-const int MAX_BOOKS = 500; /* MAX NUMBER OF BOOK IN LIST */
+const int MAX_BOOKS = 5000; /* MAX NUMBER OF BOOK IN LIST */
+
 
 struct book_list {
     int num_book; /* number of books */
@@ -36,9 +38,10 @@ book_list book_list_template(int num_booksV, book* booksV) {
 
     result.num_book = num_booksV; 
     result.books = (book*)malloc(MAX_BOOKS * sizeof(book)); 
-
+	
+	
     for (int i = 1; i <= num_booksV; ++i) {
-        result.books[i -1] = booksV[i -1]; 
+        result.books[i -1] = booksV[i -1];  
     }
 
     #ifdef DEBUG4
@@ -64,6 +67,9 @@ char* book_list_to_string(book_list book_listV) {
 
     strcpy(result, "---------------------BOOK LIST-----------------\n"); 
     for (int i = 1; i <= book_listV.num_book; ++i) {
+        char str[100]; 
+        sprintf(str, "--------- %d ---------\n", i);
+        strcat(result, str);
         strcat(result, book_to_string(book_listV.books[i -1])); 
     }
 
@@ -74,25 +80,207 @@ char* book_list_to_string(book_list book_listV) {
     return result; 
 }
 
+/*******************************************************
+ * book_list_template_by_file -- tạo ra 1 giá trị danh 
+ *      sách sách dựa theo file nhập vào 
+ * 
+*/
+book_list book_list_tempate_by_file(const char* file_name) {
+    book_list result; 
 
+    result.num_book = num_line_file(file_name) - 1; 
+    result.books = (book*)malloc(MAX_BOOKS * sizeof(book));
 
-#ifdef DEBUG4
-
-int main(void) {
-    book_list myShelf; 
-
-    {
-        book books[4]; 
-        books[1 -1] = book_template("123a4", "Sherlock Holmes pt.1", "Conan Doyle", "Kim Dong", 2019, 3, 304, 5, 1); 
-        books[2 -1] = book_template("123b5", "Sherlock Holmes pt.2", "Conan Doyle", "Tri Viet", 2019, 4, 314, 7, 1); 
-        books[3 -1] = book_template("4313c9", "Sherlock Holmes pt.3", "Conan Doyle", "Kim Dong", 2017, 3, 302, 5, 1); 
-        books[4 -1] = book_template("4313j4", "How to read a book", "Linda Elder", "HCM", 2019, 1, 75, 2, 2); 
-
-        myShelf = book_list_template(4, books); 
+    for (int i = 1; i <= result.num_book; ++i) {
+        result.books[i -1] = book_template_by_file_line(file_name, i + 1); 
     }
 
-    book_list_to_string(myShelf); 
     
+
+    #ifdef DEBUG3
+        printf("book list from file %s is \n%s", file_name, book_list_to_string(result)); 
+    #endif
+
+
+
+    return result; 
+}
+
+/*********************************************
+ * add_book_to_list_by_file -- thêm giá trị sách vào giá trị 
+ *      danh sách sách bawngf file
+ * 
+*/
+book_list add_book_to_list_by_file(book_list old_book_listV, const char* file_name) {
+    book_list result; 
+
+    result = old_book_listV; 
+
+    int num_books_to_add = num_line_file(file_name) -1; 
+    
+    for (int i = 1; i <= num_books_to_add; ++i) {
+        result.books[i + result.num_book -1] = book_template_by_file_line(file_name, i + 1);  
+    }
+
+    result.num_book = result.num_book + num_books_to_add; 
+
+
+    #ifdef DEBUG3 
+        if (sizeof(result.books) / sizeof(book) == sizeof(old_book_listV.books) / sizeof(book)) {
+            printf("allocating the same\n");
+        } else {
+            printf("allocating not the same\n"); 
+        }
+    #endif
+
+    #ifdef DEBUG3
+        printf("%s", book_list_to_string(result)); 
+    #endif
+
+    return result;
+}
+
+
+/**************************************
+ * delete_book_from_list -- xóa giá trị sách từ giá trị 
+ *      danh sách sách 
+ * 
+*/
+book_list delete_book_from_list(book_list old_book_listV, int order_of_book) {
+    book_list result; 
+
+    result = old_book_listV; 
+    if (order_of_book < result.num_book) {
+        for (int i = order_of_book; i <= result.num_book - 1; ++i) {
+            result.books[i -1] = result.books[i + 1 -1];
+        }
+        result.num_book = result.num_book - 1; 
+    } else {
+        result.num_book = result.num_book - 1; 
+    }
+
+    #ifdef DEBUG3
+        printf("%s", book_list_to_string(result)); 
+    #endif
+
+    return result; 
+} 
+
+
+/*****************************************
+ * search_book_by_author -- tạo ra danh sách sách 
+ *      có các sách có giá trị ban đầu giống với kí tự nhập vào
+ * 
+*/
+book_list search_book_by_author(book_list book_listV, const char* author_name) {
+    book_list result; 
+
+    result.num_book = 0; 
+    result.books = (book*)malloc(MAX_BOOKS * sizeof(book));
+
+    for (int i = 1; i <= book_listV.num_book; ++i) {
+        if (memcmp(book_listV.books[i -1].author, author_name, 4) == 0) {
+            result.num_book = result.num_book + 1; 
+            result.books[result.num_book -1] = book_listV.books[i -1];
+        }
+    }
+
+    #ifdef DEBUG3
+        printf("Book list with search for author \"%s\"\n%s", author_name, book_list_to_string(result)); 
+    #endif
+
+    return result; 
+}
+
+/*****************************************
+ * search_book_by_isbn -- tạo ra danh sách sách 
+ *      có các sách có giá trị ban đầu giống với kí tự nhập vào
+ * 
+*/
+book_list search_book_by_isbn(book_list book_listV, const char* isbnV) {
+    book_list result; 
+
+    result.num_book = 0; 
+    result.books = (book*)malloc(MAX_BOOKS * sizeof(book));
+
+    for (int i = 1; i <= book_listV.num_book; ++i) {
+        if (memcmp(book_listV.books[i -1].isbn, isbnV, 4) == 0) {
+            result.num_book = result.num_book + 1; 
+            result.books[result.num_book -1] = book_listV.books[i -1];
+        }
+    }
+
+    #ifdef DEBUG3
+        printf("Book list with search for isbn \"%s\"\n%s", isbnV, book_list_to_string(result)); 
+    #endif
+
+    return result; 
+}
+
+/*****************************************
+ * search_book_by_name -- tạo ra danh sách sách 
+ *      có các sách có giá trị ban đầu giống với kí tự nhập vào
+ * 
+*/
+book_list search_book_by_name(book_list book_listV, const char* nameV) {
+    book_list result; 
+
+    result.num_book = 0; 
+    result.books = (book*)malloc(MAX_BOOKS * sizeof(book));
+
+    for (int i = 1; i <= book_listV.num_book; ++i) {
+        if (memcmp(book_listV.books[i -1].name, nameV, 4) == 0) {
+            result.num_book = result.num_book + 1; 
+            result.books[result.num_book -1] = book_listV.books[i -1];
+        }
+    }
+
+    #ifdef DEBUG3
+        printf("Book list with search for name \"%s\"\n%s", nameV, book_list_to_string(result)); 
+    #endif
+
+    return result; 
+}
+
+/*****************************************
+ * search_book_by_publisher -- tạo ra danh sách sách 
+ *      có các sách có giá trị ban đầu giống với kí tự nhập vào
+ * 
+*/
+book_list search_book_by_publisher(book_list book_listV, const char* publisherV) {
+    book_list result; 
+
+    result.num_book = 0; 
+    result.books = (book*)malloc(MAX_BOOKS * sizeof(book));
+
+    for (int i = 1; i <= book_listV.num_book; ++i) {
+        if (memcmp(book_listV.books[i -1].publisher, publisherV, 4) == 0) {
+            result.num_book = result.num_book + 1; 
+            result.books[result.num_book -1] = book_listV.books[i -1];
+        }
+    }
+
+    #ifdef DEBUG3
+        printf("Book list with search for publisher \"%s\"\n%s", publisherV, book_list_to_string(result)); 
+    #endif
+
+    return result; 
+}
+
+#ifdef DEBUG3
+
+int main(void) {
+    const char FILE_INPUT_NAME[] = "book_list_file.csv"; 
+    const char FILE_ADD_NAME[] = "add_book_file.csv"; 
+    book_list myShelf; 
+
+    myShelf = book_list_tempate_by_file(FILE_INPUT_NAME); 
+    
+    // myShelf = delete_book_from_list(myShelf, 3); 
+
+    search_book_by_publisher(myShelf, "Kim ");
+
+
 }
 
 #endif 

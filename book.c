@@ -15,12 +15,13 @@
  * 
 */
 
-#include "setting.h"
+// #include "setting.h"
 #include "int_to_string.c"
 #include <stdlib.h>
 #include <string.h>
+#include "input_file.c"
 
-const long long MAX_LENGTH = 1000000; /* MAX LENGTH OF STRING */
+
 
 struct book {
     char* isbn; /* book id */
@@ -109,13 +110,36 @@ char* book_to_string(book bookV) {
     return result; 
 }
 
-#ifdef DEBUG5
+/******************************************************
+ * book_template_by_file -- nhạp giá trị cho giá trị sách 
+ *      bằng dòng trong file 
+ * 
+*/
+book book_template_by_file_line(const char* file_name, int lineV) {
+    book result; 
+
+    result.isbn = (char*)malloc(MAX_LENGTH); 
+    result.name = (char*)malloc(MAX_LENGTH);
+    result.author = (char*)malloc(MAX_LENGTH);
+    result.publisher = (char*)malloc(MAX_LENGTH);
+
+    sscanf(content_line_file(file_name, lineV), "%[^,]%*c %[^,]%*c %[^,]%*c %[^,]%*c %d,%d,%d,%d,%d", result.isbn, result.name, result.author, result.publisher, &result.publish_year, &result.reprint, &result.num_pages, &result.cost, &result.quantity); 
+
+    #ifdef DEBUG4
+        printf("%s", book_to_string(result)); 
+    #endif 
+
+    return result; 
+}
+
+
+#ifdef DEBUG4
 
 int main(void) {
-    book Sherlock_Holmes_p1; 
-    Sherlock_Holmes_p1 = book_template("a", "Sherlock Holmes pt.1", "Conan Doyle", "b", 1991, 109, 304, 20, 10); 
+    book Sherlock_Holmes_pt1; 
 
-    book_to_string(Sherlock_Holmes_p1); 
+    Sherlock_Holmes_pt1 = book_template_by_file_line("book_list_file.csv", 2); 
+
 }
 
 #endif
