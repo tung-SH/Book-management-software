@@ -155,7 +155,7 @@ book_list delete_book_from_list(book_list old_book_listV, int order_of_book) {
             result.books[i -1] = result.books[i + 1 -1];
         }
         result.num_book = result.num_book - 1; 
-    } else {
+    } else if (order_of_book == result.num_book) {
         result.num_book = result.num_book - 1; 
     }
 

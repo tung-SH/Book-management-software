@@ -19,6 +19,15 @@
 #include <stdlib.h>
 #include "book_list.c"
 
+/************************
+ * print_main_menu -- in ra màn hình 
+ *      menu chính với 4 sự lựa chọn 
+ *      1. thông tin sách 
+ *      2. quản lí 
+ *      3. tiện ích 
+ *      4. thoát 
+ * 
+*/
 void print_main_menu(void) {
     system("cls"); 
     printf("----------------MAIN MENU----------------\n"); 
@@ -29,6 +38,11 @@ void print_main_menu(void) {
     printf("-------------------\nYour choice: "); 
 }
 
+/***************************************
+ * print_infor_menu -- in ra thông tin sách 
+ *      có trong danh sách sách và thoát ra 
+ *      khi enter 1
+*/
 void print_infor_menu(book_list book_listV) {
     system("cls"); 
     printf("----------------INFORMATION MENU----------------\n");
@@ -36,6 +50,14 @@ void print_infor_menu(book_list book_listV) {
     printf("Back to MAIN MENU enter 1: "); 
 }
 
+/****************************************
+ * print_manage_menu -- in ra màn hình menu quản lí 
+ *      với 4 sự lựa chọn 
+ *      1. cập nhập thông tin sách 
+ *      2. thêm sách 
+ *      3. xóa sách 
+ *      4. thoát 
+*/
 void print_manage_menu(void) {
     system("cls"); 
     printf("---------------MANAGEMENT MENU------------------\n"); 
@@ -46,6 +68,13 @@ void print_manage_menu(void) {
     printf("-----------------------------\nYour choice: "); 
 }
 
+/************************************
+ * print_extension_menu -- in ra màn hình tiện ích 
+ *      với 3 sự lưa chọn 
+ *      1. tìm kiếm 
+ *      2. lọc 
+ *      3. thoát
+*/
 void print_extention_menu(void) {
     system("cls"); 
     printf("---------------EXTENSION MENU-------------------\n"); 
@@ -55,6 +84,12 @@ void print_extention_menu(void) {
     printf("-------------------------\nYour choice: "); 
 }
 
+/****************************************
+ * print_update_menu -- in ra màn hình menu cập nhập sách 
+ *      với phần hướng dẫn
+ *      1. câp nhập 
+ *      2. thoát 
+*/
 void print_update_menu(void) {
     system("cls"); 
     printf("-------------UPDATE MENU---------------\n");
@@ -65,6 +100,12 @@ void print_update_menu(void) {
 
 }
 
+/********************************************
+ * print_add_menu -- in ra màn hình menu thêm sách 
+ *      với phần hướng dẫn 
+ *      1. thêm 
+ *      2. thoát 
+*/
 void print_add_menu(void) {
     system("cls"); 
     printf("------------ADD MENU------------------\n");
@@ -74,6 +115,12 @@ void print_add_menu(void) {
     printf("--------------------------\nYour choice: ");
 }
 
+/***************************************************
+ * print_delete_menu -- in ra màn hình thông tin danh sách sách 
+ *      với 2 sự lựa chọn 
+ *      1. chọn sách muốn xóa theo số hiệu của sách 
+ *      2. thoát khi enter 0
+*/
 void print_delete_menu(book_list book_listV) {
     system("cls"); 
     printf("------------DELETE MENU-----------\n"); 
@@ -83,6 +130,15 @@ void print_delete_menu(book_list book_listV) {
     printf("---------------------------------------\nYour choice: "); 
 }
 
+/****************************************
+ * print_search_menu -- in ra màn hình menu tìm kiếm 
+ *      với 4 sự lựa chọn 
+ *      1. tìm kiếm theo tác giả
+ *      2. tìm kiếm theo mã sách 
+ *      3. tìm kiếm theo tên sách 
+ *      4. thoát 
+ * 
+*/
 void print_search_menu(void) {
     system("cls"); 
     printf("-----------SEARCH MENU----------\n");
